@@ -26,13 +26,15 @@ void BLECommunication::start() {
 
     pServer = NimBLEDevice::createServer();
     pServer->setCallbacks(new ServerCallbacks());
-    NimBLEService *pService = pServer->createService("6E400001-B5A3-F393-E0A9-E50E24DCCA9E"); //Main service
-    NimBLECharacteristic *rxCharacteristic = pService->createCharacteristic("6E400002-B5A3-F393-E0A9-E50E24DCCA9E",NIMBLE_PROPERTY::WRITE);
-    NimBLECharacteristic *txCharacteristic = pService->createCharacteristic("6E400003-B5A3-F393-E0A9-E50E24DCCA9E",NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
+	pServer->advertiseOnDisconnect(true);
+    NimBLEService *pService = pServer->createService(BLE_SERVICE_UUID); //Main service
+    NimBLECharacteristic *rxCharacteristic = pService->createCharacteristic(BLE_RX_CHARACTERISTIC_UUID,NIMBLE_PROPERTY::WRITE | WRITE_NR);
+    NimBLECharacteristic *txCharacteristic = pService->createCharacteristic(BLE_TX_CHARACTERISTIC_UUID,NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
     pService->start();
 
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising(); // create advertising instance
     pAdvertising->addServiceUUID(pService->getUUID()); // tell advertising the UUID of our service
+	pAdvertising->setName(BTSERIAL_DEVICE_NAME);
     pAdvertising->start(); // start advertising
       
     #ifdef BT_ECHO
@@ -47,9 +49,9 @@ void BLECommunication::start() {
 
 void BLECommunication::output(char* data) {
     if(pServer->getConnectedCount()) {
-        NimBLEService* pSvc = pServer->getServiceByUUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
+        NimBLEService* pSvc = pServer->getServiceByUUID(BLE_SERVICE_UUID);
         if(pSvc) {
-            NimBLECharacteristic* qChr = pSvc->getCharacteristic("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
+            NimBLECharacteristic* qChr = pSvc->getCharacteristic(BLE_TX_CHARACTERISTIC_UUID);
             if(qChr) {
                 qChr->setValue(String(data));
                 qChr->notify();
@@ -68,12 +70,13 @@ bool BLECommunication::readData(char* input) {
     /*byte size = m_SerialBT.readBytesUntil('\n', input, 100);
     input[size] = NULL;*/
     if(pServer->getConnectedCount()) {
-        NimBLEService* pSvc = pServer->getServiceByUUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
+        NimBLEService* pSvc = pServer->getServiceByUUID(BLE_SERVICE_UUID);
         if(pSvc) {
-            NimBLECharacteristic* qChr = pSvc->getCharacteristic("6E400002-B5A3-F393-E0A9-E50E24DCCA9E");
+            NimBLECharacteristic* qChr = pSvc->getCharacteristic(BLE_RX_CHARACTERISTIC_UUID);
             if(qChr) {
                 //String message = qChr->getValue();
                 strcpy(input, qChr->getValue().c_str());
+				    qChr->setValue('\0');
             }
 			else return false;
         }
