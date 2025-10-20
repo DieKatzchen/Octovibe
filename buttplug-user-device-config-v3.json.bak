@@ -1,0 +1,294 @@
+{
+	"version": {
+		"major": 3,
+		"minor": 0
+	},
+	"user-configs": {
+		"protocols": {
+			"tcode-v03": {
+				"communication": [
+					{
+						"btle": {
+							"services": {
+								"f0dac9f0-06b0-4725-a80a-ff083a09a857": {
+									"tx": "f0dac9f2-06b0-4725-a80a-ff083a09a857",
+									"rx": "f0dac9f1-06b0-4725-a80a-ff083a09a857"
+								}
+							},
+							"names": [
+								"Octovibe"
+							]
+						}
+					}
+				],
+				"configurations": [
+					{
+						"identifier": [
+							"Octovibe"
+						],
+						"name": "Octovibe",
+						"features": [
+							{
+								"feature-type": "Vibrate",
+								"description": "V0",
+								"actuator": {
+									"step-range": [
+										0,
+										100
+									],
+									"messages": [
+										"ScalarCmd"
+									]
+								}
+							},
+							{
+								"feature-type": "Vibrate",
+								"description": "V1",
+								"actuator": {
+									"step-range": [
+										0,
+										100
+									],
+									"messages": [
+										"ScalarCmd"
+									]
+								}
+							},
+							{
+								"feature-type": "Vibrate",
+								"description": "V2",
+								"actuator": {
+									"step-range": [
+										0,
+										100
+									],
+									"messages": [
+										"ScalarCmd"
+									]
+								}
+							},
+							{
+								"feature-type": "Vibrate",
+								"description": "V3",
+								"actuator": {
+									"step-range": [
+										0,
+										100
+									],
+									"messages": [
+										"ScalarCmd"
+									]
+								}
+							},
+							{
+								"feature-type": "Vibrate",
+								"description": "V4",
+								"actuator": {
+									"step-range": [
+										0,
+										100
+									],
+									"messages": [
+										"ScalarCmd"
+									]
+								}
+							},
+							{
+								"feature-type": "Vibrate",
+								"description": "V5",
+								"actuator": {
+									"step-range": [
+										0,
+										100
+									],
+									"messages": [
+										"ScalarCmd"
+									]
+								}
+							},
+							{
+								"feature-type": "Vibrate",
+								"description": "V6",
+								"actuator": {
+									"step-range": [
+										0,
+										100
+									],
+									"messages": [
+										"ScalarCmd"
+									]
+								}
+							},
+							{
+								"feature-type": "Vibrate",
+								"description": "V7",
+								"actuator": {
+									"step-range": [
+										0,
+										100
+									],
+									"messages": [
+										"ScalarCmd"
+									]
+								}
+							}
+						]
+					}
+				]
+			}
+		},
+		"devices": [
+			{
+				"identifier": {
+					"protocol": "xinput",
+					"identifier": "XInputController1",
+					"address": "XInputController1"
+				},
+				"config": {
+					"name": "XBox (XInput) Compatible Gamepad",
+					"features": [
+						{
+							"description": "",
+							"feature-type": "Vibrate",
+							"actuator": {
+								"step-range": [
+									0,
+									65535
+								],
+								"step-limit": [
+									0,
+									65535
+								],
+								"messages": [
+									"ScalarCmd"
+								]
+							}
+						},
+						{
+							"description": "",
+							"feature-type": "Vibrate",
+							"actuator": {
+								"step-range": [
+									0,
+									65535
+								],
+								"step-limit": [
+									0,
+									65535
+								],
+								"messages": [
+									"ScalarCmd"
+								]
+							}
+						}
+					],
+					"user-config": {
+						"allow": false,
+						"deny": true,
+						"index": 0
+					}
+				}
+			},
+			{
+				"identifier": {
+					"protocol": "galaku",
+					"identifier": "G317",
+					"address": "PeripheralId(CD:0C:A4:2A:F3:05)"
+				},
+				"config": {
+					"name": "Galaku Zaku Aircraft Cup",
+					"features": [
+						{
+							"description": "Oscillate",
+							"feature-type": "Oscillate",
+							"actuator": {
+								"step-range": [
+									0,
+									100
+								],
+								"step-limit": [
+									0,
+									100
+								],
+								"messages": [
+									"ScalarCmd"
+								]
+							}
+						},
+						{
+							"description": "Vibrate",
+							"feature-type": "Vibrate",
+							"actuator": {
+								"step-range": [
+									0,
+									100
+								],
+								"step-limit": [
+									0,
+									100
+								],
+								"messages": [
+									"ScalarCmd"
+								]
+							}
+						},
+						{
+							"description": "Battery Level",
+							"feature-type": "Battery",
+							"sensor": {
+								"value-range": [
+									[
+										0,
+										100
+									]
+								],
+								"messages": [
+									"SensorReadCmd"
+								]
+							}
+						}
+					],
+					"user-config": {
+						"allow": false,
+						"deny": false,
+						"index": 2
+					}
+				}
+			},
+			{
+				"identifier": {
+					"protocol": "joyhub",
+					"identifier": "J-Tarian",
+					"address": "PeripheralId(FF:FF:11:2C:F7:28)"
+				},
+				"config": {
+					"name": "JoyHub Tarian",
+					"features": [
+						{
+							"description": "",
+							"feature-type": "Vibrate",
+							"actuator": {
+								"step-range": [
+									0,
+									255
+								],
+								"step-limit": [
+									0,
+									255
+								],
+								"messages": [
+									"ScalarCmd"
+								]
+							}
+						}
+					],
+					"user-config": {
+						"allow": false,
+						"deny": false,
+						"index": 1
+					}
+				}
+			}
+		]
+	}
+}

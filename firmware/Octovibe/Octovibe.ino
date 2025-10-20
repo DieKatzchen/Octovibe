@@ -3,8 +3,9 @@
 #include "config.h"
 #include "src/tcode/tcode.h"
 #include "src/communication/BLECommunication.h"
+#include "src/esp32-softap-ota/softap_ota.h"
 
-ICommunication* comm  = new BLECommunication();
+static ICommunication* comm  = new BLECommunication();
 
 void tcode_D0() {
     comm->output("Octovibe version 0.5");
@@ -29,6 +30,10 @@ void tcode_DSTOP() {
 		digitalWrite(V7_PIN, LOW);
 }
 
+void tcode_DUPDATE() {
+	activate_ota();
+}
+
 struct
 {
     TCodeAxis V0{"V0", 0, 0, 255};
@@ -46,6 +51,7 @@ struct {
     TCodeDeviceCommand d1{"1", &tcode_D1};
 		TCodeDeviceCommand d2{"2", &tcode_D2};
     TCodeDeviceCommand d_stop{"STOP", &tcode_DSTOP};
+		TCodeDeviceCommand d_update{"UPDATE", &tcode_DUPDATE};
 } tcode_device_commands;
 
 TCode tcode(reinterpret_cast<TCodeAxis *>(&axes), sizeof(axes) / sizeof(TCodeAxis),
@@ -54,6 +60,7 @@ TCode tcode(reinterpret_cast<TCodeAxis *>(&axes), sizeof(axes) / sizeof(TCodeAxi
 
 void setup()
 {
+	  validate_ota();
 		//pinMode(DEBUG_LED, OUTPUT);
 		pinMode(V0_PIN, OUTPUT);
 		pinMode(V1_PIN, OUTPUT);
