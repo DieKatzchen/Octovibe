@@ -20,7 +20,7 @@
 
 class BLECommunication : public ICommunication {
 private:
-    bool m_isOpen;
+    //bool m_isOpen;
     NimBLEServer* pServer;
     
 public:

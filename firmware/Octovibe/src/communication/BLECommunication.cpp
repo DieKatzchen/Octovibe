@@ -1,7 +1,7 @@
 #include "BLECommunication.h"
 
 BLECommunication::BLECommunication() {
-    m_isOpen = false;
+    //m_isOpen = false;
 }
 
 class ServerCallbacks: public NimBLEServerCallbacks {
@@ -18,7 +18,7 @@ class ServerCallbacks: public NimBLEServerCallbacks {
 };
 
 bool BLECommunication::isOpen() {
-    return m_isOpen;
+    return pServer->getConnectedCount();
 }
 
 void BLECommunication::start() {
@@ -44,7 +44,7 @@ void BLECommunication::start() {
     #ifdef NEOPIXEL
     neopixelWrite(DEBUG_LED,0,0,RGB_BRIGHTNESS); // Blue
     #endif
-    m_isOpen = true;
+    //m_isOpen = true;
 }
 
 void BLECommunication::output(char* data) {
@@ -76,7 +76,7 @@ bool BLECommunication::readData(char* input) {
             if(qChr) {
                 //String message = qChr->getValue();
                 strcpy(input, qChr->getValue().c_str());
-				    qChr->setValue('\0');
+				//qChr->setValue('\0');
             }
 			else return false;
         }

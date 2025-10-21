@@ -2,10 +2,11 @@
 
 #include "config.h"
 #include "src/tcode/tcode.h"
+#include "src/communication/ICommunication.h"
 #include "src/communication/BLECommunication.h"
-#include "src/esp32-softap-ota/softap_ota.h"
+//#include "src/esp32-softap-ota/softap_ota.h"
 
-static ICommunication* comm  = new BLECommunication();
+static ICommunication* comm;
 
 void tcode_D0() {
     comm->output("Octovibe version 0.5");
@@ -30,9 +31,9 @@ void tcode_DSTOP() {
 		digitalWrite(V7_PIN, LOW);
 }
 
-void tcode_DUPDATE() {
-	activate_ota();
-}
+//void tcode_DUPDATE() {
+//	activate_ota();
+//}
 
 struct
 {
@@ -51,7 +52,7 @@ struct {
     TCodeDeviceCommand d1{"1", &tcode_D1};
 		TCodeDeviceCommand d2{"2", &tcode_D2};
     TCodeDeviceCommand d_stop{"STOP", &tcode_DSTOP};
-		TCodeDeviceCommand d_update{"UPDATE", &tcode_DUPDATE};
+		//TCodeDeviceCommand d_update{"UPDATE", &tcode_DUPDATE};
 } tcode_device_commands;
 
 TCode tcode(reinterpret_cast<TCodeAxis *>(&axes), sizeof(axes) / sizeof(TCodeAxis),
@@ -60,8 +61,8 @@ TCode tcode(reinterpret_cast<TCodeAxis *>(&axes), sizeof(axes) / sizeof(TCodeAxi
 
 void setup()
 {
-	  validate_ota();
-		//pinMode(DEBUG_LED, OUTPUT);
+	  //validate_ota();
+		pinMode(DEBUG_LED, OUTPUT);
 		pinMode(V0_PIN, OUTPUT);
 		pinMode(V1_PIN, OUTPUT);
 		pinMode(V2_PIN, OUTPUT);
@@ -70,13 +71,15 @@ void setup()
 		pinMode(V5_PIN, OUTPUT);
 		pinMode(V6_PIN, OUTPUT);
 		pinMode(V7_PIN, OUTPUT);
-    //digitalWrite(DEBUG_LED, HIGH);
+    digitalWrite(DEBUG_LED, HIGH);
+    comm = new BLECommunication();
 		comm->start();
 }
 
 void loop()
 {
     if (comm->isOpen()){
+      digitalWrite(DEBUG_LED, HIGH);
 			char buffer[100];
 	    if(comm->readData(buffer)){
   			uint32_t t0 = micros();
@@ -101,4 +104,10 @@ void loop()
 		  	analogWrite(V7_PIN, axes.V7.get_remap(t0));
 			}
 		}
+   else{
+    digitalWrite(DEBUG_LED,HIGH);
+    delay(1000);
+    digitalWrite(DEBUG_LED,LOW);
+    delay(1000);
+   }
 }
